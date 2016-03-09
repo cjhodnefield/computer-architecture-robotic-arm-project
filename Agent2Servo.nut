@@ -22,6 +22,12 @@ function requestHandler(request, response) {
         server.log("setServo3 received: " + potReading);
     }
     
+    if ("setServo4" in request.query) {    
+        local potReading = request.query.setServo4.tointeger();
+        device.send("setServo4", potReading);
+        server.log("setServo4 received: " + potReading);
+    }
+    
     // send a response back saying everything was OK.
     response.send(200, "OK");
   } catch (ex) {

@@ -5,9 +5,10 @@
 globalIDCount <- 1;
 previousPotReading <- 0;
 
-serv1 <- hardware.pin8;
-serv2 <- hardware.pin9;
-serv3 <- hardware.pin5;
+serv1 <- hardware.pin5;
+serv2 <- hardware.pin7;
+serv3 <- hardware.pin8;
+serv4 <- hardware.pin9 ;
 
 class Servo {
     // Class constants
@@ -53,19 +54,29 @@ class Servo {
 local servo1 = Servo(serv1);
 local servo2 = Servo(serv2);
 local servo3 = Servo(serv3);
+local servo4 = Servo(serv4);
 
 function setServo1(potReading) {
+    server.log("setServo1 set to: " + potReading);
     servo1.setServoToPot(potReading);
 }
 
 function setServo2(potReading) {
+    server.log("setServo2 set to: " + potReading);
     servo2.setServoToPot(potReading);
 }
 
 function setServo3(potReading) {
+    server.log("setServo3 set to: " + potReading);
     servo3.setServoToPot(potReading);
 }
 
+function setServo4(potReading) {
+    server.log("setServo4 set to: " + potReading);
+    servo4.setServoToPot(potReading);
+}
+
 agent.on("setServo1", setServo1);
-//agent.on("setServo2", setServo2);
+agent.on("setServo2", setServo2);
 agent.on("setServo3", setServo3);
+agent.on("setServo4", setServo4);
