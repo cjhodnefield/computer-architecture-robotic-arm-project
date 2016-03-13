@@ -8,7 +8,7 @@ previousPotReading <- 0;
 serv1 <- hardware.pin5;
 serv2 <- hardware.pin7;
 serv3 <- hardware.pin8;
-serv4 <- hardware.pin9 ;
+serv4 <- hardware.pin9;
 
 class Servo {
     // Class constants
@@ -36,6 +36,13 @@ class Servo {
     }
     
     function setServoToPot(potReading) {
+        if (id == 2) {
+            if (potReading > 40000) {
+                potReading = 40000;
+            } else if (potReading < 15000) {
+                potReading = 15000;
+            }
+        }
         local servoVal = (potReading - POT_MIN) / (POT_MAX - POT_MIN);
         //server.log("potReading: " + potReading);
         //server.log("previousPotReading: " + previousPotReading);
