@@ -6,6 +6,8 @@ This project provides code to control a robotic arm assembly through an Electric
 
 The agent and device code for both Imps uses class structure to allowe any number of potentiometers and servos to be connected to their respective Imps (within the pin limits of the Imp of course) and use the same code for operation.
 
+The .ai file on this GitHub is the file that we used to cut out the parts for the arm using a laser cutter at HAL. A link to a video of the laser cutter is listed below as well.
+
 
 Videos of the arm in action:
 
