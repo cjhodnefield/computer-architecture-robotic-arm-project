@@ -1,54 +1,82 @@
-const OtherAgentUrl = "https://agent.electricimp.com/bXsPPP286ll2"
+globalIDCount <- 0;
+ 
+function potRead(pot) {
+    local val = pot.read();
+    return val;
+}
+ 
+class Potentiometer {
+    // Members
+    id = 0;
+    potentiometer = null;
+    previousPotReading = 0;
 
-// sending to Servo1 on imp_Johnny 
-device.on("setServo1", function(potReading) {
-  // build the URL
-  local url = format("%s?setServo1=%i", OtherAgentUrl, potReading);
-  server.log("Servo 1 :" + potReading);
-  // make the request, and call the inline function
-  // when we get a response
-  http.get(url).sendasync(function(resp) {
-    // log the response, should be 200: OK is things worked
-    server.log(format("%i: %s", resp.statuscode, resp.body));
-  });
-});
+   
+    constructor(pot) {
+        pot.configure(ANALOG_IN);
+       
+        potentiometer = pot;
+        id = globalIDCount;
+        globalIDCount += 1;
+    }
+   
+    function potRead() {
+        local val = potentiometer.read();
+        return val;
+    }
+    
+    
+}
+ 
+potentiometer1 <- hardware.pin1;
+potentiometer2 <- hardware.pin5;
+potentiometer3 <- hardware.pin7;
+potentiometer4 <- hardware.pin8;
+ 
+local pot1 = Potentiometer(potentiometer1);
+local pot2 = Potentiometer(potentiometer2);
+local pot3 = Potentiometer(potentiometer3);
+local pot4 = Potentiometer(potentiometer4);
+ 
+function checkPotReading(pot) {
+    local potReading = pot.potRead();
+    //server.log("potReading: " + potReading);
+    //server.log("previousPotReading: " + pot.previousPotReading);
+    local diff = math.abs(potReading - pot.previousPotReading);
+   
+    if (diff > 300) {
+        if (pot.id == 0) {
+            agent.send("setServo1", potReading);
+        } else if (pot.id == 1) {
+            agent.send("setServo2", potReading);
+        } else if (pot.id == 2) {
+            agent.send("setServo3", potReading);
+        } else if (pot.id == 3) {
+            agent.send("setServo4", potReading);
+        }
+    }
+   
+    pot.previousPotReading = potReading;
+}
 
-// sending to Servo2 on imp_Johnny 
-device.on("setServo2", function(potReading) {
-  // build the URL
-  local url = format("%s?setServo2=%i", OtherAgentUrl, potReading);
-   server.log("Servo 2 :" + potReading);
-  // make the request, and call the inline function
-  // when we get a response
-  http.get(url).sendasync(function(resp) {
-    // log the response, should be 200: OK is things worked
-    server.log(format("%i: %s", resp.statuscode, resp.body));
-  });
-});
+function initialPotReads() {
+    server.log("pot1: " + pot1.potRead());
+    server.log("pot2: " + pot2.potRead());
+    server.log("pot3: " + pot3.potRead());
+    server.log("pot4: " + pot4.potRead());
+}
 
+function update() {
+    checkPotReading(pot1);
+    checkPotReading(pot2);
+    checkPotReading(pot3);
+    checkPotReading(pot4);
+   
+    imp.wakeup(0.4, update);
+    //server.log("Pin 9:" + pot4.potRead());
+    //agent.send("setServo4", 1000);
+    
+}
 
-// sending to Servo3 on imp_Johnny 
-device.on("setServo3", function(potReading) {
-  // build the URL
-  local url = format("%s?setServo3=%i", OtherAgentUrl, potReading);
-   server.log("Servo 3 :" + potReading);
-  // make the request, and call the inline function
-  // when we get a response
-  http.get(url).sendasync(function(resp) {
-    // log the response, should be 200: OK is things worked
-    server.log(format("%i: %s", resp.statuscode, resp.body));
-  });
-});
-
-// sending to Servo4 on imp_Johnny 
-device.on("setServo4", function(potReading) {
-  // build the URL
-  local url = format("%s?setServo4=%i", OtherAgentUrl, potReading);
-   server.log("Servo 4 :" + potReading);
-  // make the request, and call the inline function
-  // when we get a response
-  http.get(url).sendasync(function(resp) {
-    // log the response, should be 200: OK is things worked
-    server.log(format("%i: %s", resp.statuscode, resp.body));
-  });
-});
+initialPotReads();
+update();
