@@ -7,11 +7,11 @@ The agent and device code for both Imps uses class structure to allowe any numbe
 
 Videos of the arm in action:
 
+https://vimeo.com/158508842
+
 https://vimeo.com/158508838
 
 https://vimeo.com/158508841
-
-https://vimeo.com/158508842
 
 
 Video of laser cutting the parts for the arm:
