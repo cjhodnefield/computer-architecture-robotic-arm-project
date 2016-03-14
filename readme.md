@@ -1,4 +1,6 @@
 Imp Arm Project
+CJ Hodnefield
+Omar Latif
 
 This project provides code to control a robotic arm assembly through an Electric Imp (Agent2/Device2), as well as code for a second Imp (Agent1/Device1) that reads values from a set of potentiometers. The second Imp sends translated readings to the arm control Imp to operate the servos on the arm. This means that the robotic arm can be controlled remotely by the potentiometer setup over the internet.
 
