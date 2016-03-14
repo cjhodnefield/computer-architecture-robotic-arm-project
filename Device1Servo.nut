@@ -39,3 +39,16 @@ device.on("setServo3", function(potReading) {
     server.log(format("%i: %s", resp.statuscode, resp.body));
   });
 });
+
+// sending to Servo4 on imp_Johnny 
+device.on("setServo4", function(potReading) {
+  // build the URL
+  local url = format("%s?setServo4=%i", OtherAgentUrl, potReading);
+   server.log("Servo 4 :" + potReading);
+  // make the request, and call the inline function
+  // when we get a response
+  http.get(url).sendasync(function(resp) {
+    // log the response, should be 200: OK is things worked
+    server.log(format("%i: %s", resp.statuscode, resp.body));
+  });
+});
